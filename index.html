@@ -32,6 +32,22 @@
   
     <audio id="bgMusic" src="assets/song.mp3"></audio>
 </section>
-  <iframe src="music.html" style="display:none;" id="musicFrame"></iframe> 
+  <script>
+      function playMusic() {
+        const audio = document.getElementById("bgMusic");
+        const btn = document.querySelector(".music-btn");
+
+        if (audio.paused) {
+          audio.play().then(() => {
+            btn.innerHTML = "Pause Music ⏸️";
+          }).catch(error => {
+            console.log("Playback failed. Make sure assets/song.mp3 exists!", error);
+          });
+        } else {
+          audio.pause();
+          btn.innerHTML = "Play Music 🎵";
+        }
+      }
+    </script>
 </body>
 </html>
