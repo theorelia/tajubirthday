@@ -50,6 +50,34 @@
     </div>
 
 </section>
-  <iframe src="music.html" style="display:none;" id="musicFrame"></iframe>
+  <audio id="bgMusic" src="assets/song.mp3" loop></audio>
+
+    <script>
+      const audio = document.getElementById("bgMusic");
+
+      // Sync music when the timeline page loads
+      window.addEventListener("load", () => {
+        const isPlaying = localStorage.getItem("musicPlaying") === "true";
+        const savedTime = localStorage.getItem("musicTime");
+
+        if (isPlaying) {
+          audio.currentTime = savedTime ? parseFloat(savedTime) : 0;
+          audio.play().catch(err => {
+            console.log("Autoplay blocked. Click anywhere to resume.");
+            document.body.addEventListener("click", () => {
+              audio.play();
+              localStorage.setItem("musicPlaying", "true");
+            }, { once: true });
+          });
+        }
+      });
+
+      // Keep saving the time for when he navigates back to Home or Letter
+      setInterval(() => {
+        if (!audio.paused) {
+          localStorage.setItem("musicTime", audio.currentTime);
+        }
+      }, 1000);
+    </script>
 </body>
 </html>
