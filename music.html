@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Player</title>
+</head>
+<body style="margin:0; padding:0;">
+    <audio id="bgMusic" src="assets/song.mp3" loop></audio>
+
+    <script>
+        // Auto-play *after* user clicks anywhere
+        document.body.addEventListener("click", () => {
+            const music = document.getElementById("bgMusic");
+            music.volume = 0.4;
+            music.play();
+        });
+
+        // Keep the music time across pages
+        const music = document.getElementById("bgMusic");
+
+        // Load previous time
+        if (localStorage.getItem("musicTime")) {
+            music.currentTime = parseFloat(localStorage.getItem("musicTime"));
+        }
+
+        // Save time every second
+        setInterval(() => {
+            localStorage.setItem("musicTime", music.currentTime);
+        }, 1000);
+    </script>
+</body>
+</html>
