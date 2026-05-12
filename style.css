@@ -106,3 +106,18 @@ body {
 .event h2 {
     margin: 0;
 }
+/* Make the music button pop a little more */
+.music-btn {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.music-btn:hover {
+    background: #b08a6b; /* Darker shade when hovering */
+    transform: scale(1.05); /* Slight grow effect */
+}
+
+.music-btn:active {
+    transform: scale(0.98); /* Click effect */
+}
