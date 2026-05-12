@@ -30,24 +30,44 @@
 
     <button class="music-btn" onclick="playMusic()">Play Music 🎵</button>
   
-    <audio id="bgMusic" src="assets/song.mp3"></audio>
+    <audio id="bgMusic" src="assets/song.mp3" loop></audio>
 </section>
-  <script>
-      function playMusic() {
-        const audio = document.getElementById("bgMusic");
-        const btn = document.querySelector(".music-btn");
+ <script>
+  const audio = document.getElementById("bgMusic");
+  const btn = document.querySelector(".music-btn");
 
-        if (audio.paused) {
-          audio.play().then(() => {
-            btn.innerHTML = "Pause Music ⏸️";
-          }).catch(error => {
-            console.log("Playback failed. Make sure assets/song.mp3 exists!", error);
-          });
-        } else {
-          audio.pause();
-          btn.innerHTML = "Play Music 🎵";
-        }
-      }
-    </script>
+  // 1. Sync music state on page load
+  window.addEventListener("load", () => {
+    const isPlaying = localStorage.getItem("musicPlaying") === "true";
+    const savedTime = localStorage.getItem("musicTime");
+
+    if (isPlaying) {
+      audio.currentTime = savedTime ? parseFloat(savedTime) : 0;
+      audio.play().then(() => {
+        btn.innerHTML = "Pause Music ⏸️";
+      }).catch(err => console.log("Autoplay blocked: Click Play to resume."));
+    }
+  });
+
+  // 2. Save progress every second
+  setInterval(() => {
+    if (!audio.paused) {
+      localStorage.setItem("musicTime", audio.currentTime);
+    }
+  }, 1000);
+
+  // 3. Play/Pause Function
+  function playMusic() {
+    if (audio.paused) {
+      audio.play();
+      btn.innerHTML = "Pause Music ⏸️";
+      localStorage.setItem("musicPlaying", "true");
+    } else {
+      audio.pause();
+      btn.innerHTML = "Play Music 🎵";
+      localStorage.setItem("musicPlaying", "false");
+    }
+  }
+</script>      
 </body>
 </html>
