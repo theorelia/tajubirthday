@@ -33,6 +33,34 @@
 
     <p>Happy Birthday to the love of my life! I’m so lucky that I found my way to you and will forever find my way back to you, in glory, joy, and sorrow! ❤️✨</p>
 </section>
-  <iframe src="music.html" style="display:none;" id="musicFrame"></iframe>
+  <audio id="bgMusic" src="assets/song.mp3" loop></audio>
+    <script>
+  const audio = document.getElementById("bgMusic");
+
+  // Sync music when the letter page loads
+  window.addEventListener("load", () => {
+    const isPlaying = localStorage.getItem("musicPlaying") === "true";
+    const savedTime = localStorage.getItem("musicTime");
+
+    if (isPlaying) {
+      audio.currentTime = savedTime ? parseFloat(savedTime) : 0;
+      audio.play().catch(err => {
+        console.log("Autoplay blocked. Click anywhere to resume music.");
+        // Resume music on the first click if blocked
+        document.body.addEventListener("click", () => {
+          audio.play();
+          localStorage.setItem("musicPlaying", "true");
+        }, { once: true });
+      });
+    }
+  });
+
+  // Keep saving the time so the next page (Scrapbook) knows where to start
+  setInterval(() => {
+    if (!audio.paused) {
+      localStorage.setItem("musicTime", audio.currentTime);
+    }
+  }, 1000);
+</script>
 </body>
 </html>
